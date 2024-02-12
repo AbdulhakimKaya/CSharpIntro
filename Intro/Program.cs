@@ -1,6 +1,7 @@
 ﻿// variables -> camelCase
 
 using Intro.Business;
+using Intro.DataAccess.Concretes;
 using Intro.Entities;
 
 string message = "Krediler";
@@ -67,16 +68,51 @@ for (int i = 0; i < courses.Length; i++)
     Console.WriteLine(courses[i].Name + " / " + courses[i].Price); 
 }
 
-foreach (var course in courses)
+foreach (Course course in courses)
 {
     Console.WriteLine(course.Name + " / " + course.Price);
 }
 
-CourseManager courseManager = new CourseManager();
-Course[] courses2 = courseManager.GetAll();
+CourseManager courseManager = new CourseManager(new EfCourseDal());
+List<Course> courses2 = courseManager.GetAll();
 
-for (int i = 0; i < courses2.Length; i++)
+for (int i = 0; i < courses2.Count; i++)
 {
-    Console.WriteLine(courses[i].Name + " / " + courses[i].Price);
+    Console.WriteLine(courses2[i].Name + " / " + courses2[i].Price);
 }
 
+
+IndividualCustomer customer1 = new IndividualCustomer();
+customer1.Id = 1;
+customer1.CustomerNumber = "12345";
+customer1.FirstName = "Abdulhakim";
+customer1.LastName = "KAYA";
+customer1.NationalIdentity = "12345678901";
+
+IndividualCustomer customer2 = new IndividualCustomer();
+customer2.Id = 2;
+customer2.CustomerNumber = "12346";
+customer2.FirstName = "Furkan";
+customer2.LastName = "Oğuz";
+customer2.NationalIdentity = "12345678902";
+
+CorporateCustomer customer3 = new CorporateCustomer();
+customer3.Id = 1;
+customer3.CustomerNumber = "12347";
+customer3.Name = "Kodlamaio";
+customer3.TaxNumber = "123456789";
+
+CorporateCustomer customer4 = new CorporateCustomer();
+customer4.Id = 2;
+customer4.CustomerNumber = "12348";
+customer4.Name = "abc";
+customer4.TaxNumber = "123456787";
+
+
+BaseCustomer[] customers = { customer1, customer2, customer3, customer4 };
+
+// Polymorphism
+foreach (BaseCustomer customer in customers)
+{
+    Console.WriteLine(customer.CustomerNumber);
+}
